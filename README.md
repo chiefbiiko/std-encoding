@@ -12,6 +12,8 @@ console.log("ACAB in hex", decode(encode("ACAB", "utf8"), "hex"));
 
 ## API
 
+This module supports `utf8`, `hex`, and `base64` encoding.
+
 #### `encode(str: string, encoding: string = "utf8"): Uint8Array`
 
 Encodes a string assuming the specified encoding format.
