@@ -1,7 +1,7 @@
 import {
   toUint8Array,
   fromUint8Array
-} from "https://deno.land/x/base64/base64url.ts";
+} from "https://deno.land/x/base64@v0.2.0/base64url.ts";
 
 const decoder: TextDecoder = new TextDecoder();
 const encoder: TextEncoder = new TextEncoder();
