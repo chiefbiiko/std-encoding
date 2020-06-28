@@ -1,6 +1,6 @@
 import {
   toUint8Array,
-  fromUint8Array
+  fromUint8Array,
 } from "https://deno.land/x/base64@v0.2.0/base64url.ts";
 
 const decoder: TextDecoder = new TextDecoder();
@@ -11,7 +11,7 @@ function toHexString(buf: Uint8Array): string {
   return buf.reduce(
     (hex: string, byte: number): string =>
       `${hex}${byte < 16 ? "0" : ""}${byte.toString(16)}`,
-    ""
+    "",
   );
 }
 
