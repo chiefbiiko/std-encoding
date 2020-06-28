@@ -43,15 +43,25 @@ Deno.test({
 Deno.test({
   name: "opt-in base64 url safeness",
   fn(): void {
-    const msg: string = "function cb() {}";
+    const msg: string = "fnc+l/A=";
     const buf: Uint8Array = encode(msg, "base64url");
     const str: string = decode(buf, "base64url");
 
     assert(!str.includes("-"));
-    assert(str.includes("+"));
     assert(!str.includes("_"));
     assert(!str.includes("."));
 
     assertEquals(str, msg);
+  },
+});
+
+Deno.test({
+  name: "base64 encoding handles base64url strings",
+  fn(): void {
+    const urlsafe: string = "fnc+l/A=";
+    const buf1: Uint8Array = encode(urlsafe, "base64");
+    const buf2: Uint8Array = encode(urlsafe, "base64url");
+
+    assertEquals(buf1, buf2);
   },
 });

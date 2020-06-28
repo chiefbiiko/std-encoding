@@ -6,6 +6,16 @@ import {
 const decoder: TextDecoder = new TextDecoder();
 const encoder: TextEncoder = new TextEncoder();
 
+/* Replaces all occurrences of "-" with "+" and any of "_" with "/". */
+function toUrlSafe(str: string): string {
+  return str.replace(/\-/g, "+").replace(/_/g, "/");
+}
+
+/* Replaces all occurrences of "+" with "-" and any of "/" with "_". */
+function fromUrlSafe(str: string): string {
+  return str.replace(/\+/g, "-").replace(/\//g, "_");
+}
+
 /** Serializes a Uint8Array to a hexadecimal string. */
 function toHexString(buf: Uint8Array): string {
   return buf.reduce(
@@ -36,6 +46,8 @@ export function decode(buf: Uint8Array, encoding: string = "utf8"): string {
     return decoder.decode(buf);
   } else if (/^base64$/i.test(encoding)) {
     return fromUint8Array(buf);
+  } else if (/^base64url$/i.test(encoding)) {
+    return toUrlSafe(fromUint8Array(buf));
   } else if (/^hex(?:adecimal)?$/i.test(encoding)) {
     return toHexString(buf);
   } else {
@@ -46,8 +58,8 @@ export function decode(buf: Uint8Array, encoding: string = "utf8"): string {
 export function encode(str: string, encoding: string = "utf8"): Uint8Array {
   if (/^utf-?8$/i.test(encoding)) {
     return encoder.encode(str);
-  } else if (/^base64$/i.test(encoding)) {
-    return toUint8Array(str);
+  } else if (/^base64(?:url)?$/i.test(encoding)) {
+    return toUint8Array(fromUrlSafe(str));
   } else if (/^hex(?:adecimal)?$/i.test(encoding)) {
     return fromHexString(str);
   } else {
