@@ -1,20 +1,8 @@
-import {
-  toUint8Array,
-  fromUint8Array,
-} from "https://deno.land/x/base64@v0.2.0/base64url.ts";
+import * as base64 from "https://deno.land/x/base64@v0.2.1/mod.ts";
+import * as base64url from "https://deno.land/x/base64@v0.2.1/base64url.ts";
 
 const decoder: TextDecoder = new TextDecoder();
 const encoder: TextEncoder = new TextEncoder();
-
-/* Replaces all occurrences of "-" with "+" and any of "_" with "/". */
-function toUrlSafe(str: string): string {
-  return str.replace(/\-/g, "+").replace(/_/g, "/");
-}
-
-/* Replaces all occurrences of "+" with "-" and any of "/" with "_". */
-function fromUrlSafe(str: string): string {
-  return str.replace(/\+/g, "-").replace(/\//g, "_");
-}
 
 /** Serializes a Uint8Array to a hexadecimal string. */
 function toHexString(buf: Uint8Array): string {
@@ -45,9 +33,9 @@ export function decode(buf: Uint8Array, encoding: string = "utf8"): string {
   if (/^utf-?8$/i.test(encoding)) {
     return decoder.decode(buf);
   } else if (/^base64$/i.test(encoding)) {
-    return fromUint8Array(buf);
+    return base64.fromUint8Array(buf);
   } else if (/^base64url$/i.test(encoding)) {
-    return toUrlSafe(fromUint8Array(buf));
+    return base64url.fromUint8Array(buf);
   } else if (/^hex(?:adecimal)?$/i.test(encoding)) {
     return toHexString(buf);
   } else {
@@ -59,7 +47,7 @@ export function encode(str: string, encoding: string = "utf8"): Uint8Array {
   if (/^utf-?8$/i.test(encoding)) {
     return encoder.encode(str);
   } else if (/^base64(?:url)?$/i.test(encoding)) {
-    return toUint8Array(fromUrlSafe(str));
+    return base64.toUint8Array(str);
   } else if (/^hex(?:adecimal)?$/i.test(encoding)) {
     return fromHexString(str);
   } else {
