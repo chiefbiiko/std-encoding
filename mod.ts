@@ -28,8 +28,10 @@ function fromHexString(hex: string): Uint8Array {
   return buf;
 }
 
+export type Encoding = "utf8" | "utf-8" | "base64" | "hex" | "hexadecimal";
+
 /** Decodes a Uint8Array to utf8-, base64-, or hex-encoded string. */
-export function decode(buf: Uint8Array, encoding: string = "utf8"): string {
+export function decode(buf: Uint8Array, encoding: Encoding = "utf8"): string {
   if (/^utf-?8$/i.test(encoding)) {
     return decoder.decode(buf);
   } else if (/^base64$/i.test(encoding)) {
@@ -43,7 +45,7 @@ export function decode(buf: Uint8Array, encoding: string = "utf8"): string {
   }
 }
 
-export function encode(str: string, encoding: string = "utf8"): Uint8Array {
+export function encode(str: string, encoding: Encoding = "utf8"): Uint8Array {
   if (/^utf-?8$/i.test(encoding)) {
     return encoder.encode(str);
   } else if (/^base64(?:url)?$/i.test(encoding)) {
